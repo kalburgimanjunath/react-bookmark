@@ -64,7 +64,11 @@ export default function App() {
             >
               <div className="bookmark_form">
                 <Formik
-                  initialValues={{ title: '', link: '' }}
+                  initialValues={{
+                    title: '',
+                    link: '',
+                    author: user.user.email,
+                  }}
                   validate={(values) => {
                     const errors = {};
                     if (!values.title) {
@@ -96,6 +100,11 @@ export default function App() {
                         <Field type="text" name="link" />
                         <ErrorMessage name="link" component="div" />
                       </div>
+                      <Field
+                        type="hidden"
+                        name="author"
+                        value={user.user.email}
+                      />
                       <Button
                         title="Add"
                         type="submit"
