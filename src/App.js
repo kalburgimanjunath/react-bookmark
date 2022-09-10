@@ -47,85 +47,87 @@ export default function App() {
 
   if (isConnected) {
     return (
-      <div className="container-fluid">
-        <div>
-          <h1>Hello {user.user.displayName}</h1>
+      <>
+        <div className="header">
+          <div className="header-text">Hello {user.user.displayName}</div>
           <img src={user.user.photoURL} width={50} height={50} />
           <button onClick={() => logout({ returnTo: window.location.origin })}>
             Log out
           </button>
         </div>
-        <div className="row">
-          <div
-            className="col-6 aligncenterdiv"
-            xs="2"
-            style={{ backgroundColor: 'pink' }}
-          >
-            <div className="bookmark_form">
-              <Formik
-                initialValues={{ title: '', link: '' }}
-                validate={(values) => {
-                  const errors = {};
-                  if (!values.title) {
-                    errors.title = 'Required';
-                  }
-                  if (!values.link) {
-                    errors.link = 'Required';
-                  }
-                  return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    saveData({ fields: values });
-                    setSubmitting(false);
-                  }, 4000);
-                  // alert.show('Oh look, an alert!');
-                }}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <div className="row">
-                      <label htmlFor="title">Title</label>
-                      <Field type="text" name="title" />
-                      <ErrorMessage name="title" component="div" />
-                    </div>
-                    <div className="row">
-                      <label htmlFor="link">Link</label>
-                      <Field type="text" name="link" />
-                      <ErrorMessage name="link" component="div" />
-                    </div>
-                    <Button
-                      title="Add"
-                      type="submit"
-                      className="primary"
-                      disabled={isSubmitting}
+        <div className="container-fluid">
+          <div className="row body">
+            <div
+              className="col-6 aligncenterdiv"
+              xs="2"
+              style={{ backgroundColor: 'pink' }}
+            >
+              <div className="bookmark_form">
+                <Formik
+                  initialValues={{ title: '', link: '' }}
+                  validate={(values) => {
+                    const errors = {};
+                    if (!values.title) {
+                      errors.title = 'Required';
+                    }
+                    if (!values.link) {
+                      errors.link = 'Required';
+                    }
+                    return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                    setTimeout(() => {
+                      alert(JSON.stringify(values, null, 2));
+                      saveData({ fields: values });
+                      setSubmitting(false);
+                    }, 4000);
+                    // alert.show('Oh look, an alert!');
+                  }}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <div className="row">
+                        <label htmlFor="title">Title</label>
+                        <Field type="text" name="title" />
+                        <ErrorMessage name="title" component="div" />
+                      </div>
+                      <div className="row">
+                        <label htmlFor="link">Link</label>
+                        <Field type="text" name="link" />
+                        <ErrorMessage name="link" component="div" />
+                      </div>
+                      <Button
+                        title="Add"
+                        type="submit"
+                        className="primary"
+                        disabled={isSubmitting}
+                      >
+                        Add
+                      </Button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
+            <div className="col-6" xs="2" style={{ backgroundColor: 'orange' }}>
+              {bookmarks &&
+                bookmarks.map((item, index) => {
+                  return (
+                    <div
+                      className="bookmark-card-item"
+                      key={item.fields['title'] + index}
                     >
-                      Add
-                    </Button>
-                  </Form>
-                )}
-              </Formik>
+                      <div>{item.fields['title']}</div>
+                      <div>
+                        <a href={item.fields['link']}>{item.fields['link']}</a>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
-          <div className="col-6" xs="2" style={{ backgroundColor: 'orange' }}>
-            {bookmarks &&
-              bookmarks.map((item, index) => {
-                return (
-                  <div
-                    className="bookmark-card-item"
-                    key={item.fields['title'] + index}
-                  >
-                    <div>{item.fields['title']}</div>
-                    <div>
-                      <a href={item.fields['link']}>{item.fields['link']}</a>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
         </div>
-      </div>
+      </>
     );
   } else {
     return (
