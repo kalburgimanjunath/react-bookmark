@@ -49,7 +49,7 @@ export default function App() {
     return (
       <>
         <div className="header">
-          <div className="header-text">Hello {user.user.displayName}</div>
+          <div className="header-text">Hello, {user.user.displayName}</div>
           <img src={user.user.photoURL} width={50} height={50} />
           <button onClick={() => logout({ returnTo: window.location.origin })}>
             Log out
