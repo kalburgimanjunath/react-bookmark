@@ -31,3 +31,11 @@ body {
   max-width: 90%;
   text-overflow: ellipsis;
 }
+.login {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  max-width: 300px;
+  margin:20% 40%
+}

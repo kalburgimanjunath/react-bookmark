@@ -129,13 +129,20 @@ export default function App() {
     );
   } else {
     return (
-      <button
-        className="btn btn-outline-success"
-        id="login"
-        onClick={() => connectWithPopup({ access_id: 'gHnGmdqszGAjvgW1GPmf' })}
-      >
-        Log in
-      </button>
+      <div className="login">
+        <h4>Please login to start creating your bookmark links</h4>
+        <div>
+          <button
+            className="btn btn-outline-success"
+            id="login"
+            onClick={() =>
+              connectWithPopup({ access_id: 'gHnGmdqszGAjvgW1GPmf' })
+            }
+          >
+            Log in
+          </button>
+        </div>
+      </div>
     );
   }
 }
