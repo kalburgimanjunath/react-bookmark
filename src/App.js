@@ -3,11 +3,11 @@ import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useEarthoOne } from '@eartho/one-client-react';
-import { useAlert } from 'react-alert';
+// import { useAlert } from 'react-alert';
 
 import { Button } from 'reactstrap';
 export default function App() {
-  const alert = useAlert();
+  // const alert = useAlert();
   const { isLoading, isConnected, error, user, connectWithPopup, logout } =
     useEarthoOne();
   const [bookmarks, setBookmarks] = useState([]);
@@ -80,7 +80,7 @@ export default function App() {
                     saveData({ fields: values });
                     setSubmitting(false);
                   }, 4000);
-                  alert.show('Oh look, an alert!');
+                  // alert.show('Oh look, an alert!');
                 }}
               >
                 {({ isSubmitting }) => (
