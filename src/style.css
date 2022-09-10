@@ -7,6 +7,24 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 625px;
   text-align: center;
+  background: #fff;
+  padding: 20px;
+}
+.aligncenterdiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bookmark-card-item {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #d6d6d6;
+  overflow: hidden;
+  margin: 10px;
+  padding: 20px;
+}
+.bookmark-card-item a {
+  max-width: 90%;
+  text-overflow: ellipsis;
 }

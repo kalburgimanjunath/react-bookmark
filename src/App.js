@@ -1,18 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useEarthoOne } from '@eartho/one-client-react';
+import { useAlert } from 'react-alert';
+
+import { Button } from 'reactstrap';
 export default function App() {
+  const alert = useAlert();
   const { isLoading, isConnected, error, user, connectWithPopup, logout } =
     useEarthoOne();
+  const [bookmarks, setBookmarks] = useState([]);
+  useEffect(() => {
+    fetch(
+      'https://api.airtable.com/v0/appWToptGxYlLEtgo/Bookmarks?api_key=keyeNXyxxuuYJY19w'
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        setBookmarks(response.records);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [bookmarks]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
+  const saveData = (data) => {
+    const url = `https://api.airtable.com/v0/appWToptGxYlLEtgo/Bookmarks`;
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer keyeNXyxxuuYJY19w',
+      },
+      body: JSON.stringify(data),
+    };
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
+  // if (error) {
+  //   return <div>Oops... {error.message}</div>;
+  // }
 
   if (isConnected) {
     return (
@@ -25,48 +56,73 @@ export default function App() {
           </button>
         </div>
         <div className="row">
-          <div className="col-6" xs="2" style={{ backgroundColor: 'pink' }}>
+          <div
+            className="col-6 aligncenterdiv"
+            xs="2"
+            style={{ backgroundColor: 'pink' }}
+          >
             <div className="bookmark_form">
               <Formik
                 initialValues={{ title: '', link: '' }}
                 validate={(values) => {
                   const errors = {};
-                  if (!values.email) {
-                    errors.email = 'Required';
-                  } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                      values.email
-                    )
-                  ) {
-                    errors.email = 'Invalid email address';
+                  if (!values.title) {
+                    errors.title = 'Required';
+                  }
+                  if (!values.link) {
+                    errors.link = 'Required';
                   }
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                   setTimeout(() => {
                     alert(JSON.stringify(values, null, 2));
+                    saveData({ fields: values });
                     setSubmitting(false);
-                  }, 400);
+                  }, 4000);
+                  alert.show('Oh look, an alert!');
                 }}
               >
                 {({ isSubmitting }) => (
                   <Form>
                     <div className="row">
-                      <label for="title">Title</label>
+                      <label htmlFor="title">Title</label>
                       <Field type="text" name="title" />
+                      <ErrorMessage name="title" component="div" />
                     </div>
                     <div className="row">
-                      <label for="link">Link</label>
+                      <label htmlFor="link">Link</label>
                       <Field type="text" name="link" />
+                      <ErrorMessage name="link" component="div" />
                     </div>
-                    <button type="button">Add</button>
+                    <Button
+                      title="Add"
+                      type="submit"
+                      className="primary"
+                      disabled={isSubmitting}
+                    >
+                      Add
+                    </Button>
                   </Form>
                 )}
               </Formik>
             </div>
           </div>
           <div className="col-6" xs="2" style={{ backgroundColor: 'orange' }}>
-            Right
+            {bookmarks &&
+              bookmarks.map((item, index) => {
+                return (
+                  <div
+                    className="bookmark-card-item"
+                    key={item.fields['title'] + index}
+                  >
+                    <div>{item.fields['title']}</div>
+                    <div>
+                      <a href={item.fields['link']}>{item.fields['link']}</a>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
